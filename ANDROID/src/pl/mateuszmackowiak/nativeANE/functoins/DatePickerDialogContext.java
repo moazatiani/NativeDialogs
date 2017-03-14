@@ -238,7 +238,7 @@ public class DatePickerDialogContext extends FREContext {
 	            date = args[2].getAsString();
 	            
 		        buttons = FREUtilities.convertFREArrayToStringArray((FREArray)args[3]);
-		        
+
 		        style = args[4].getAsString();
 		        is24HourView = args[5].getAsBool();
 			    cancelable = args[6].getAsBool();
@@ -310,19 +310,26 @@ public class DatePickerDialogContext extends FREContext {
 			
 			if(buttons!=null && buttons.length>0){
 				dialog.setButton(DatePickerDialog.BUTTON_POSITIVE, buttons[0], new ConfitmListener(freContext,0));
+
 				if(buttons.length>1){
 					dialog.setButton(DatePickerDialog.BUTTON_NEUTRAL, buttons[1], new ConfitmListener(freContext,1));
 				}
+
 				if(buttons.length>2){
 					dialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, buttons[2], new ConfitmListener(freContext,2));
+				} else {
+					dialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "", new ConfitmListener(freContext,2));
 				}
-			}else
-				dialog.setButton(DatePickerDialog.BUTTON_POSITIVE,"OK", new ConfitmListener(freContext,0));
-			
-			
+			} else {
+				dialog.setButton(DatePickerDialog.BUTTON_POSITIVE, "OK", new ConfitmListener(freContext, 0));
+				dialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "", new ConfitmListener(freContext, 2));
+			}
+						
 			dialog.setCancelable(cancelable);
-			if(cancelable==true)
+
+			if(cancelable==true) {
 				dialog.setOnCancelListener(new CancelListener(freContext));
+			}
 			
 			return dialog;
 	    }catch(Exception e){
@@ -477,9 +484,9 @@ public class DatePickerDialogContext extends FREContext {
         @Override
 		public void onCancel(DialogInterface dialog) 
         {
-        	Log.e(KEY,"onCancle");
-        	freContext.dispatchStatusEventAsync(NativeDialogsExtension.CANCELED,String.valueOf(-1));   
-     	   dialog.dismiss();
+        	Log.d(KEY,"onCancel");
+        	freContext.dispatchStatusEventAsync(NativeDialogsExtension.CANCELED,"-1");
+     	    dialog.dismiss();
         }
     }
 	
